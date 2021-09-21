@@ -1,25 +1,31 @@
 const express = require('express');
+const { conectarBD } = require('../database/conexion.js')
 
-class SevidorModelo{
+class SevidorModelo {
 
 
-    constructor(){
+    constructor() {
 
         this.app = express();
+        this.levantarBD();
         this.llamarRutas();
 
 
     }
 
-    levantarSevidor(){
+    levantarSevidor() {
 
-        this.app.listen(process.env.PUERTO,function(){
-            console.log("servidor encendido "+process.env.PUERTO);
+        this.app.listen(process.env.PUERTO, function () {
+            console.log("servidor encendido " + process.env.PUERTO);
         });
 
     }
 
-    llamarRutas(){
+    levantarBD() {
+        conectarBD();
+    }
+
+    llamarRutas() {
 
         this.app.get('/facturas', function (req, res) {
             res.send('Buenas tardes Juan Jose');
@@ -32,7 +38,7 @@ class SevidorModelo{
         this.app.put('/facturas/cambiar', function (req, res) {
             res.send('Buenas tardes Juan Jose');
         });
-        
+
         this.app.delete('/facturas/borrar', function (req, res) {
             res.send('Buenas tardes Juan Jose');
         });
@@ -45,4 +51,4 @@ class SevidorModelo{
 
 }
 
-module.exports=SevidorModelo;
+module.exports = SevidorModelo;
