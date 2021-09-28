@@ -37,8 +37,25 @@ class SevidorModelo {
 
     llamarRutas() {
 
-        this.app.get('/facturas', function (req, res) {
-            res.send('Buenas tardes Juan Jose');
+        this.app.get('/facturas', async function (req, res) {
+
+            try {
+
+                let facturas = await FacturaModelo.find()
+                res.status(200).json({
+                    respuesta: "exito",
+                    datos: facturas
+                })
+
+            } catch (error) {
+
+                res.status(400).json({
+                    respuesta: "error",
+                    datos: error
+                })
+
+            }
+
         });
 
         this.app.post('/facturas/nuevo', async function (req, res) {
