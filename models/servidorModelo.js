@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const { conectarBD } = require('../database/conexion.js')
 const FacturaModelo = require("../models/facturaModelo.js")
 
@@ -27,8 +28,10 @@ class SevidorModelo {
         conectarBD();
     }
 
-    auxiliares(){
+    auxiliares() {
         this.app.use(express.json())
+        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(cors())
     }
 
 
@@ -40,29 +43,29 @@ class SevidorModelo {
 
         this.app.post('/facturas/nuevo', async function (req, res) {
 
-            let datosFactura=req.body;
-            
-            try{
+            let datosFactura = req.body;
 
-                let factura=new FacturaModelo(datosFactura);
+            try {
+
+                let factura = new FacturaModelo(datosFactura);
                 await factura.save();
                 res.status(200).json({
-                    respuesta:"exito",
-                    datos:factura
+                    respuesta: "exito",
+                    datos: factura
                 })
 
 
 
-            }catch(error){
+            } catch (error) {
 
                 res.status(400).json({
-                    respuesta:"error",
-                    datos:error
+                    respuesta: "error",
+                    datos: error
                 })
 
 
             }
-            
+
         });
 
         this.app.put('/facturas/cambiar', function (req, res) {
@@ -74,10 +77,6 @@ class SevidorModelo {
         });
 
     }
-
-
-
-
 
 }
 
